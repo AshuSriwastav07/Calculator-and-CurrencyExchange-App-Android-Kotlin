@@ -1,5 +1,6 @@
 package com.example.mycalculator
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -8,6 +9,7 @@ import android.view.ScrollCaptureCallback
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mycalculator.databinding.ActivityMainBinding
@@ -72,11 +74,21 @@ class MainActivity : AppCompatActivity() {
         inputText=findViewById(R.id.inputNumber)
         ResultText=findViewById(R.id.ResultShow)
 
+        var ExchangeButton: ImageButton=findViewById(R.id.exchangebutton)
+
 
         inputText.movementMethod=ScrollingMovementMethod()
         inputText.setActivated(true)
         inputText.setPressed(true)
         var text:String
+
+
+        ExchangeButton.setOnClickListener{
+            val intent=Intent(this, ExchangeRate::class.java)
+            startActivity(intent)
+
+        }
+
 
         button1.setOnClickListener{
             text=inputText.text.toString()+"1"
@@ -149,47 +161,92 @@ class MainActivity : AppCompatActivity() {
         }
 
         button00.setOnClickListener{
-            text=inputText.text.toString()+"00"
-            inputText.setText(text)
-            ShowResult(text)
+            val inputTextLength = inputText.text.length
+            if(inputTextLength==0){
+                text=inputText.text.toString()+"0"
+                inputText.setText(text)
+                ShowResult(text)
+
+            }else {
+                text = inputText.text.toString() + "00"
+                inputText.setText(text)
+                ShowResult(text)
+            }
 
         }
 
         buttondot.setOnClickListener{
-            text=inputText.text.toString()+"."
+
+            if(inputText.text.contains(".")){
+
+            }else if(inputText.text.length==0) {
+            text=inputText.text.toString()+"0."
             inputText.setText(text)
             ShowResult(text)
+            }
+            else{
+                text=inputText.text.toString()+"."
+                inputText.setText(text)
+                ShowResult(text)
+
+            }
 
         }
 
         buttonAdd.setOnClickListener{
-            text=inputText.text.toString()+"+"
-            inputText.setText(text)
-            check=check+1
+
+            if(inputText.text.isEmpty()){
+
+                Log.d("Main","+ Clicked")
+            }else if( !inputText.text.isEmpty() && inputText.text.last() !in listOf('+', '-', '*', '/', '%')) {
+                text = inputText.text.toString() + "+"
+                inputText.setText(text)
+                check = check + 1
+            }
         }
 
         buttonSub.setOnClickListener{
-            text=inputText.text.toString()+"-"
-            inputText.setText(text)
-            check=check+1
+            if(inputText.text.isEmpty()){
+
+                Log.d("Main","+ Clicked")
+            }else if( !inputText.text.isEmpty() && inputText.text.last() !in listOf('+', '-', '*', '/', '%')) {
+                text = inputText.text.toString() + "-"
+                inputText.setText(text)
+                check = check + 1
+            }
         }
 
         buttonMultiply.setOnClickListener{
-            text=inputText.text.toString()+"*"
-            inputText.setText(text)
-            check=check+1
+            if(inputText.text.isEmpty()){
+
+                Log.d("Main","+ Clicked")
+            }else if( !inputText.text.isEmpty() && inputText.text.last() !in listOf('+', '-', '*', '/', '%')) {
+                text = inputText.text.toString() + "*"
+                inputText.setText(text)
+                check = check + 1
+            }
         }
 
         buttonDivide.setOnClickListener{
-            text=inputText.text.toString()+"/"
-            inputText.setText(text)
-            check=check+1
+            if(inputText.text.isEmpty()){
+
+                Log.d("Main","+ Clicked")
+            }else if( !inputText.text.isEmpty() && inputText.text.last() !in listOf('+', '-', '*', '/', '%')) {
+                text = inputText.text.toString() + "/"
+                inputText.setText(text)
+                check = check + 1
+            }
         }
 
         buttonpercent.setOnClickListener{
-            text=inputText.text.toString()+"%"
-            inputText.setText(text)
-            check=check+1
+            if(inputText.text.isEmpty()){
+
+                Log.d("Main","+ Clicked")
+            }else if( !inputText.text.isEmpty() && inputText.text.last() !in listOf('+', '-', '*', '/', '%')) {
+                text = inputText.text.toString() + "%"
+                inputText.setText(text)
+                check = check + 1
+            }
         }
 
         buttonEqual.setOnClickListener{
