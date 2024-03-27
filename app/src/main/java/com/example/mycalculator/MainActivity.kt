@@ -1,25 +1,19 @@
 package com.example.mycalculator
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import android.view.ScrollCaptureCallback
-import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
-import com.example.mycalculator.databinding.ActivityMainBinding
-import com.google.android.material.tabs.TabLayout
+import androidx.appcompat.app.AppCompatActivity
 import javax.script.ScriptEngine
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
 
 class MainActivity : AppCompatActivity() {
 
+    //Declear buttons var
     lateinit var button1:android.widget.Button
     lateinit var button2:android.widget.Button
     lateinit var button3:android.widget.Button
@@ -43,7 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var inputText:EditText
     lateinit var ResultText:EditText
-    var check:Int = 0
+    var check:Int = 0 //count operator
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.show()
 
+        // find and assign button to var
         button1=findViewById(R.id.button1)
         button2=findViewById(R.id.button2)
         button3=findViewById(R.id.button3)
@@ -77,20 +73,20 @@ class MainActivity : AppCompatActivity() {
         var ExchangeButton: ImageButton=findViewById(R.id.exchangebutton)
 
 
-        inputText.movementMethod=ScrollingMovementMethod()
+        inputText.movementMethod=ScrollingMovementMethod()  //allow input text to scroll
         inputText.setActivated(true)
         inputText.setPressed(true)
         var text:String
 
 
-        ExchangeButton.setOnClickListener{
+        ExchangeButton.setOnClickListener{// button to send user to exchange screen
             val intent=Intent(this, ExchangeRate::class.java)
             startActivity(intent)
 
         }
 
 
-        button1.setOnClickListener{
+        button1.setOnClickListener{ // add value in input box
             text=inputText.text.toString()+"1"
             inputText.setText(text)
             ShowResult(text)
@@ -160,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        button00.setOnClickListener{
+        button00.setOnClickListener{  // check if length is 0 only 0 will add and if length is !0 it will 00
             val inputTextLength = inputText.text.length
             if(inputTextLength==0){
                 text=inputText.text.toString()+"0"
@@ -175,7 +171,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        buttondot.setOnClickListener{
+        buttondot.setOnClickListener{ //check id length  is 0 it will add 0. and if length is !0 it will add only dot
 
             if(inputText.text.contains(".")){
 
@@ -193,7 +189,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        buttonAdd.setOnClickListener{
+        buttonAdd.setOnClickListener{ // check if last input is operator it will not add operator and !operator it will add operator
 
             if(inputText.text.isEmpty()){
 
@@ -249,19 +245,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        buttonEqual.setOnClickListener{
+        buttonEqual.setOnClickListener{ //calculate on click
             text=ResultText.text.toString()
             inputText.setText(text)
             ResultText.setText(null)
         }
 
 
-        buttonclear.setOnClickListener{
+        buttonclear.setOnClickListener{ // make inout box clear
             inputText.setText(null)
             ResultText.setText(null)
         }
 
-        buttonBackspace.setOnClickListener {
+        buttonBackspace.setOnClickListener { // delete last enter digit or operator and if its empty it will not work and app will not creash
             val inputTextLength = inputText.text.length
 
             if (inputTextLength > 1) {
@@ -286,7 +282,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun ShowResult(text: String) {
+    private fun ShowResult(text: String) { // show result  on click buy eval all thet input box context
 
         val engine:ScriptEngine=ScriptEngineManager().getEngineByName("rhino")
         try{
