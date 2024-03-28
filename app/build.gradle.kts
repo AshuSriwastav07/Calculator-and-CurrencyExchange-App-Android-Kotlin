@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mycalculator"
+    namespace = "com.tlc.mycalculator"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.mycalculator"
+        applicationId = "com.tlc.mycalculator"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
@@ -19,7 +19,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -54,5 +54,5 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation ("androidx.cardview:cardview:1.0.0")
-    implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("com.squareup.picasso:picasso:2.71828")
 }
