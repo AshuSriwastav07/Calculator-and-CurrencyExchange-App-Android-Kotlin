@@ -7,9 +7,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import javax.script.ScriptEngine
-import javax.script.ScriptEngineManager
-import javax.script.ScriptException
+import net.objecthunter.exp4j.ExpressionBuilder
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         inputText=findViewById(R.id.inputNumber)
         ResultText=findViewById(R.id.ResultShow)
 
-        var ExchangeButton: ImageButton=findViewById(R.id.exchangebutton)
+        val ExchangeButton: ImageButton=findViewById(R.id.exchangebutton)
 
 
         inputText.movementMethod=ScrollingMovementMethod()  //allow input text to scroll
@@ -248,13 +246,13 @@ class MainActivity : AppCompatActivity() {
         buttonEqual.setOnClickListener{ //calculate on click
             text=ResultText.text.toString()
             inputText.setText(text)
-            ResultText.setText(null)
+            ResultText.setText("")
         }
 
 
         buttonclear.setOnClickListener{ // make inout box clear
             inputText.setText(null)
-            ResultText.setText(null)
+            ResultText.setText("")
         }
 
         buttonBackspace.setOnClickListener { // delete last enter digit or operator and if its empty it will not work and app will not creash
@@ -282,24 +280,18 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun ShowResult(text: String) { // show result  on click buy eval all thet input box context
-
-        val engine:ScriptEngine=ScriptEngineManager().getEngineByName("rhino")
-        try{
-            val result:Any=engine.eval(text)
-            val mainResult=result.toString()
-            if(check==0){
-                ResultText.setText(null)
-
-            }else{
+    private fun ShowResult(text: String) {
+        try {
+            val result = ExpressionBuilder(text).build().evaluate()
+            val mainResult = result.toString()
+            if (check == 0) {
+                ResultText.setText("")
+            } else {
                 ResultText.setText(mainResult)
             }
-
-
-        }catch (e: ScriptException){
-
-            Log.d("CalculationError","Error")
-
+        } catch (e: Exception) {
+            Log.e("CalculationError", "Error evaluating expression", e)
+            ResultText.setText("Error")
         }
     }
 

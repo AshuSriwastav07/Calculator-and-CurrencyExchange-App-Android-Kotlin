@@ -51,7 +51,8 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="50sp"
-            android:verticalScrollbarPosition="right" />
+            android:verticalScrollbarPosition="right"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <EditText
             android:id="@+id/ResultShow"
@@ -65,7 +66,8 @@
             android:minHeight="48dp"
             android:paddingRight="10dp"
             android:textColor="#D1CECE"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 
     <LinearLayout

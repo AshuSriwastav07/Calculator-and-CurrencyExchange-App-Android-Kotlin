@@ -11,8 +11,8 @@ android {
         applicationId = "com.tlc.mycalculator"
         minSdk = 21
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 5
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,6 +50,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     implementation ("io.apisense:rhino-android:1.0")
+    implementation ("net.objecthunter:exp4j:0.4.8")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")

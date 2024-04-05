@@ -1,14 +1,16 @@
 package com.tlc.mycalculator
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 
-class MyAdapter(private val currencyPrice: Array<String>, private val ImagesUrl: Array<String>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+/*class MyAdapter(private val currencyPrice: Array<String>, private val ImagesUrl: Array<String>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context) // Inflates layout XML into corresponding View objects
         val view = inflater.inflate(R.layout.currency_exchage, parent, false) // Inflates the item layout
@@ -35,5 +37,30 @@ class MyAdapter(private val currencyPrice: Array<String>, private val ImagesUrl:
                 .centerInside() // Centers the image inside the ImageView
                 .into(image) // Sets the loaded image to the ImageView
         }
+    }*/
+
+class MyAdapter(context: Context, private val rates: List<String>, private val ImageLink: List<String>) :
+    ArrayAdapter<String>(context, R.layout.currency_exchage, rates) {
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val rowView = inflater.inflate(R.layout.currency_exchage, parent, false)
+
+        val textView = rowView.findViewById<TextView>(R.id.currency_rate)
+        val imageView=rowView.findViewById<ImageView>(R.id.FlagImage)
+        textView.text = rates[position]
+
+        val builder = Picasso.Builder(context)
+        builder.downloader(OkHttp3Downloader(context))
+        builder.build().load(ImageLink[position]).into(imageView)
+
+/*
+        Picasso.get()
+            .load(ImageLink[position])
+            .into(imageView)
+
+*/
+
+        return rowView
     }
 }

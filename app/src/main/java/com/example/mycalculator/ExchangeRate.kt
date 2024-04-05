@@ -9,11 +9,10 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ListView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,7 +33,7 @@ class ExchangeRate : AppCompatActivity() { // Defines the ExchangeRate class, in
         setContentView(R.layout.activity_exchange_rate)
 
         // Initializes an array of image URLs for currency flags
-        val ImageUrl= arrayOf("https://cdn.countryflags.com/thumbs/australia/flag-400.png",
+        val ImageUrl= listOf("https://cdn.countryflags.com/thumbs/australia/flag-400.png",
             "https://www.countryflags.com/wp-content/uploads/bulgaria-flag-png-large.png",
             "https://www.countryflags.com/wp-content/uploads/brazil-flag-png-large.png",
             "https://www.countryflags.com/wp-content/uploads/canada-flag-png-large.png",
@@ -65,36 +64,42 @@ class ExchangeRate : AppCompatActivity() { // Defines the ExchangeRate class, in
             "https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png",
             "https://www.countryflags.com/wp-content/uploads/south-africa-flag-png-large.png",)
 
-        val recyclerView: RecyclerView = findViewById(R.id.CurrencyFlagRecycleView) // Initializes RecyclerView
 
-        val API ="https://api.frankfurter.app/latest?" // Defines the base API URL for exchange rates
 
-        GlobalScope.launch(Dispatchers.IO) { // Launches a coroutine in the IO context
-            try { // Starts a try block to catch exceptions
-                val apiResult = URL(API).readText() // Reads text from the API URL
-                val jsonObject = JSONObject(apiResult) // Creates a JSONObject from the API result
-                val ratesObject = jsonObject.getJSONObject("rates") // Gets the "rates" object from JSON
 
-                val rateList = mutableListOf<String>() // Initializes a mutable list for currency rates
-                ratesObject.keys().forEach { currency -> // Iterates through each currency key in ratesObject
-                    val rate = "${currency}: ${ratesObject.getDouble(currency)}" // Formats the currency rate
-                    rateList.add(rate) // Adds the formatted rate to the list
-                    Log.d("Main3",rateList[0]) // Logs the first rate in the list
-                }
-
-                withContext(Dispatchers.Main) { // Switches to the Main coroutine context
-                    recyclerView.adapter = MyAdapter(rateList.toTypedArray(), ImageUrl) // Sets adapter for RecyclerView
-                }
-            } catch (e: Exception) { // Catches any exceptions thrown in the try block
-                Log.e("Main", "$e") // Logs the exception message
-            }
-        }
-
-        recyclerView.layoutManager = LinearLayoutManager(this) // Sets layout manager for RecyclerView
-
+        getRates(ImageUrl)
         spinnerSetup() // Calls a function to setup spinners
         textChangedStuff() // Calls a function to setup text change listener
+
     }
+
+
+    private fun getRates(ImageUrl: List<String>) {
+        val API = "https://api.frankfurter.app/latest?"
+
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val apiResult = URL(API).readText()
+                val jsonObject = JSONObject(apiResult)
+                val ratesObject = jsonObject.getJSONObject("rates")
+
+                val rateList = mutableListOf<String>()
+                ratesObject.keys().forEach { currency ->
+                    val rate = "${currency}: ${ratesObject.getDouble(currency)}"
+                    rateList.add(rate)
+                }
+
+                withContext(Dispatchers.Main) {
+                    val CurrencyListView: ListView = findViewById(R.id.CurrencyFlagListView)
+                    CurrencyListView.adapter = MyAdapter(this@ExchangeRate, rateList, ImageUrl)
+                }
+            } catch (e: Exception) {
+                Log.e("Main", "$e")
+            }
+        }
+    }
+
+
 
     private fun textChangedStuff() { // Defines a function for setting up text change listener
         val et_firstConversion=findViewById<EditText>(R.id.GetExchangeRate1) // Initializes EditText widget
